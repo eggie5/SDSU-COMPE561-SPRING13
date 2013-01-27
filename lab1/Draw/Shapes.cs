@@ -144,6 +144,14 @@ namespace Draw
 
         public override void writeText(StreamWriter sw)
         {
+            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            List<Point> points = new List<Point>();
+            points.Add(this.pt1);
+            points.Add(this.pt2);
+            string json = seri.Serialize(points);
+
+            sw.Write(json);
         }
 
         public override void readText(StreamReader sr)
@@ -200,6 +208,14 @@ namespace Draw
 
         public override void writeText(StreamWriter sw)
         {
+            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            List<Point> points = new List<Point>();
+            points.Add(this.pt1);
+            points.Add(this.pt2);
+            string json = seri.Serialize(points);
+
+            sw.Write(json);
         }
 
         public override void readText(StreamReader sr)
@@ -267,6 +283,16 @@ namespace Draw
 
         public override void writeText(StreamWriter sw)
         {
+            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            //List<Point> points = new List<Point>();
+            //foreach (Point p in freeList)
+            //{
+            //    points.Add(p);
+            //}
+            string json = seri.Serialize(freeList);
+
+            sw.Write(json);
         }
 
         public override void readText(StreamReader sr)

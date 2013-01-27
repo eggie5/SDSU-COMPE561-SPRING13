@@ -21,7 +21,8 @@ namespace Draw
         ShapeType currentShape = ShapeType.Line;
         Shape shape;
         bool dataModified = false;
-        string currentFile; 
+        string currentFile;
+        bool newFile = true;
 
 		public Form1()
 		{
@@ -109,11 +110,78 @@ namespace Draw
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        } 
+       
+        }
+
+        private void dosaveaction(StreamWriter writer)
+        {
+
+            foreach (Shape shape in shapeList)
+            {
+                shape.writeText(writer);
+
+            }
+        }
+
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        } 
+            DialogResult result; // result of SaveFileDialog
+            string fileName; // name of file containing data
+
+            if (!newFile)
+            {
+                FileStream output = new FileStream(currentFile,
+                           FileMode.OpenOrCreate, FileAccess.Write);
+
+                // sets file to where data is written
+                StreamWriter writer = new StreamWriter(output);
+
+                dosaveaction(writer);
+
+                writer.Close();
+
+                return;
+            }
+
+            using (SaveFileDialog fileChooser = new SaveFileDialog())
+            {
+                fileChooser.CheckFileExists = false; // let user create file
+                result = fileChooser.ShowDialog();
+                fileName= currentFile = fileChooser.FileName; // name of file to save data
+            }
+
+            if (result == DialogResult.OK)
+            {
+                // show error if user specified invalid file
+                if (fileName == string.Empty)
+                    MessageBox.Show("Invalid File Name", "Error",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    try
+                    {
+                        // open file with write access
+                        FileStream output = new FileStream(fileName,
+                           FileMode.OpenOrCreate, FileAccess.Write);
+
+                        // sets file to where data is written
+                        StreamWriter fileWriter = new StreamWriter(output);
+
+                        dosaveaction(fileWriter);
+                        fileWriter.Close();
+                        newFile = false;
+                        // disable Save button and enable Enter button
+                        //    saveButton.Enabled = false;
+                        //   enterButton.Enabled = true;
+                    }
+                    catch (IOException)
+                    {
+                        MessageBox.Show("Error opening file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
