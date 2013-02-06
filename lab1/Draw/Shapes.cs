@@ -4,6 +4,8 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Draw
 {
@@ -81,8 +83,10 @@ namespace Draw
 
 	}  // End Shape class
 
+     
     public class Line : Shape
 	{
+         
         protected Point pt1, pt2;
 
         public Point Pt1
@@ -144,13 +148,14 @@ namespace Draw
 
         public override void writeText(StreamWriter sw)
         {
-            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
+          
 
             List<Point> points = new List<Point>();
             points.Add(this.pt1);
             points.Add(this.pt2);
-            string json = seri.Serialize(points);
 
+            string json = JsonConvert.SerializeObject(this);
+           
             sw.Write(json);
         }
 

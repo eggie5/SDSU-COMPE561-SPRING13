@@ -132,7 +132,7 @@ namespace Draw
             if (!newFile)
             {
                 FileStream output = new FileStream(currentFile,
-                           FileMode.OpenOrCreate, FileAccess.Write);
+                           FileMode.Create, FileAccess.Write);
 
                 // sets file to where data is written
                 StreamWriter writer = new StreamWriter(output);
