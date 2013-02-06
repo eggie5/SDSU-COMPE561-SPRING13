@@ -185,6 +185,85 @@ namespace Draw
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DialogResult result;
+            string fileName;
+
+       
+            
+
+            using (OpenFileDialog fileChooser = new OpenFileDialog())
+            {
+                fileChooser.CheckFileExists = false; // let user create file
+                result = fileChooser.ShowDialog();
+                fileName  = fileChooser.FileName; // name of file to save data
+            }
+
+            if (result == DialogResult.OK)
+            {
+                // show error if user specified invalid file
+                if (fileName == string.Empty)
+                    MessageBox.Show("Invalid File Name", "Error",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    try
+                    {
+
+                        FileStream input = new FileStream(fileName,
+                                   FileMode.Open, FileAccess.Read);
+
+                        // sets file to where data is written
+                        StreamReader reader = new StreamReader(input);
+
+
+                        doReadAction(reader);
+                        reader.Close();
+                       
+                    }
+                    catch (IOException)
+                    {
+                        MessageBox.Show("Error opening file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void doReadAction(StreamReader reader)
+        {
+           // String rawText = reader.ReadToEnd();
+            //parse text
+         
+            while(reader.Peek()>0)
+            {
+             
+                String line = reader.ReadLine();
+                string type =line.Split(new char[0])[0];
+                //Shape shape=null; 
+                //using the global shape obj he added
+
+                switch (type)
+                {
+                    case "Line":
+                        shape = new Line();
+                        shape.readText(line);
+                        break;
+                    case "FreeLine":
+
+                        shape = new FreeLine();
+                        shape.readText(line);
+                        break;
+                    case "Rect":
+                        shape = new Rect();
+                        shape.readText(line);
+                        break;
+
+                }
+
+                shapeList.Add(shape);
+
+            }
+
+
         } 
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)

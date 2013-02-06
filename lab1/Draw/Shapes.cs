@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
 namespace Draw
 {
@@ -20,7 +19,7 @@ namespace Draw
         public abstract void writeBinary(BinaryWriter bw);
         public abstract void readBinary(BinaryReader br);
         public abstract void writeText(StreamWriter sw);
-        public abstract void readText(StreamReader sr);
+        public abstract void readText(String sr);
 
         public Shape(Pen pen)
         {
@@ -133,8 +132,8 @@ namespace Draw
 
 		public override string ToString()
 		{
-			string s = string.Format("Line: ({0},{1}), ({2},{3}), {4}, {5})",
-				pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color);
+            string s = string.Format("Line {4} {5} ({0},{1}) ({2},{3});\n",
+				pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
 			return s;
 		}
 
@@ -149,18 +148,27 @@ namespace Draw
         public override void writeText(StreamWriter sw)
         {
           
-
-            List<Point> points = new List<Point>();
-            points.Add(this.pt1);
-            points.Add(this.pt2);
-
-            string json = JsonConvert.SerializeObject(this);
            
-            sw.Write(json);
+            sw.Write(this.ToString());
         }
 
-        public override void readText(StreamReader sr)
+        public override void readText(String sr)
         {
+            String[] items = sr.Split(new char[0]); //split on whitespace
+           
+            float width = float.Parse(items[1]);
+            Color color = Color.FromArgb(Convert.ToInt32(items[2], 16));
+
+
+            String[] points = items[3].Substring(1, items[3].Length - 2).Split(',');
+            Point p1 = new Point(Int32.Parse(points[0]), Int32.Parse(points[1]));
+
+            String[] points2 = items[4].Substring(1, items[4].Length - 3).Split(',');
+            Point p2 = new Point(Int32.Parse(points2[0]), Int32.Parse(points2[1]));
+
+            this.pt1 = p1;
+            this.pt2 = p2;
+            this.penFinal = new Pen(color, width); ;
         }
 
     } // End line class
@@ -197,8 +205,8 @@ namespace Draw
 
 		public override string ToString()
 		{
-			string s = string.Format("Rectangle: ({0},{1}), ({2},{3}), {4}, {5})",
-						pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color);
+            string s = string.Format("Rect {4} {5} ({0},{1}) ({2},{3});\n",
+                        pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
 			return s;
 
 		}
@@ -213,18 +221,26 @@ namespace Draw
 
         public override void writeText(StreamWriter sw)
         {
-            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
-
-            List<Point> points = new List<Point>();
-            points.Add(this.pt1);
-            points.Add(this.pt2);
-            string json = seri.Serialize(points);
-
-            sw.Write(json);
+            sw.Write(this.ToString());
         }
 
-        public override void readText(StreamReader sr)
+        public override void readText(String sr)
         {
+            String[] items = sr.Split(new char[0]); //split on whitespace
+
+            float width = float.Parse(items[1]);
+            Color color = Color.FromArgb(Convert.ToInt32(items[2], 16));
+
+
+            String[] points = items[3].Substring(1, items[3].Length - 2).Split(',');
+            Point p1 = new Point(Int32.Parse(points[0]), Int32.Parse(points[1]));
+
+            String[] points2 = items[4].Substring(1, items[4].Length - 3).Split(',');
+            Point p2 = new Point(Int32.Parse(points2[0]), Int32.Parse(points2[1]));
+
+            this.pt1 = p1;
+            this.pt2 = p2;
+            this.penFinal = new Pen(color, width); ;
         }
 
     } // End Rect class
@@ -272,9 +288,11 @@ namespace Draw
 
 		public override string ToString()
 		{
-			string s = string.Format("FreeLine: ({0},{1})", (int)penFinal.Width, penFinal.Color);
+            string s = string.Format("FreeLine {0} {1} ", (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
 			foreach(Point p in freeList)
 				s += string.Format("({0},{1}) ", p.X, p.Y);
+
+            s += ";\n";
 			return s;
 		}
 
@@ -287,21 +305,30 @@ namespace Draw
         }
 
         public override void writeText(StreamWriter sw)
-        {
-            System.Web.Script.Serialization.JavaScriptSerializer seri = new System.Web.Script.Serialization.JavaScriptSerializer();
-
-            //List<Point> points = new List<Point>();
-            //foreach (Point p in freeList)
-            //{
-            //    points.Add(p);
-            //}
-            string json = seri.Serialize(freeList);
-
-            sw.Write(json);
+        {     
+            sw.Write(this.ToString());
         }
 
-        public override void readText(StreamReader sr)
+        public override void readText(String sr)
         {
+            String[] items = sr.Split(new char[0]); //split on whitespace
+
+            float width = float.Parse(items[1]);
+            Color color = Color.FromArgb(Convert.ToInt32(items[2], 16));
+
+            int i;
+            for (i = 3; i < items.Length-1; i++)
+            {
+                String[] points = items[i].Substring(1, items[i].Length - 2).Split(',');
+                Point p1 = new Point(Int32.Parse(points[0]), Int32.Parse(points[1]));
+                
+                this.freeList.Add(p1);
+            }
+
+            this.penFinal = new Pen(color, width);
+            
+
+            
         }
 
     } // End FreeLine class
