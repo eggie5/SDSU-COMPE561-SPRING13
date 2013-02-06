@@ -17,7 +17,7 @@ namespace Draw
 		public abstract void Draw(Graphics g, Pen pen);
 		public abstract void mouseMove(Graphics g, MouseEventArgs e);
         public abstract void writeBinary(BinaryWriter bw);
-        public abstract void readBinary(BinaryReader br);
+        public abstract void readBinary(String br);
         public abstract void writeText(StreamWriter sw);
         public abstract void readText(String sr);
 
@@ -139,9 +139,10 @@ namespace Draw
 
         public override void writeBinary(BinaryWriter bw)
         {
+            bw.Write(this.ToString());
         }
 
-        public override void readBinary(BinaryReader br)
+        public override void readBinary(String br)
         {
         }
 
@@ -213,9 +214,10 @@ namespace Draw
 
         public override void writeBinary(BinaryWriter bw)
         {
+            bw.Write(this.ToString());
         }
 
-        public override void readBinary(BinaryReader br)
+        public override void readBinary(String br)
         {
         }
 
@@ -298,9 +300,10 @@ namespace Draw
 
         public override void writeBinary(BinaryWriter bw)
         {
+            bw.Write(this.ToString());
         }
 
-        public override void readBinary(BinaryReader br)
+        public override void readBinary(String br)
         {
         }
 

@@ -110,45 +110,19 @@ namespace Draw
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-       
+            saveDialog();
         }
 
-        private void dosaveaction(StreamWriter writer)
-        {
-
-            foreach (Shape shape in shapeList)
-            {
-                shape.writeText(writer);
-
-            }
-        }
-
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveDialog()
         {
             DialogResult result; // result of SaveFileDialog
             string fileName; // name of file containing data
-
-            if (!newFile)
-            {
-                FileStream output = new FileStream(currentFile,
-                           FileMode.Create, FileAccess.Write);
-
-                // sets file to where data is written
-                StreamWriter writer = new StreamWriter(output);
-
-                dosaveaction(writer);
-
-                writer.Close();
-
-                return;
-            }
 
             using (SaveFileDialog fileChooser = new SaveFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
                 result = fileChooser.ShowDialog();
-                fileName= currentFile = fileChooser.FileName; // name of file to save data
+                fileName = currentFile = fileChooser.FileName; // name of file to save data
             }
 
             if (result == DialogResult.OK)
@@ -163,17 +137,31 @@ namespace Draw
                     {
                         // open file with write access
                         FileStream output = new FileStream(fileName,
-                           FileMode.OpenOrCreate, FileAccess.Write);
+                           FileMode.Create, FileAccess.Write);
 
                         // sets file to where data is written
-                        StreamWriter fileWriter = new StreamWriter(output);
 
-                        dosaveaction(fileWriter);
-                        fileWriter.Close();
+                        string ext = Path.GetExtension(fileName);
+                        if (ext.Equals(".bin"))
+                        {
+                            BinaryWriter bw = new BinaryWriter(output);
+                            persistShapesAsBin(bw);
+                            bw.Close();
+                        }
+                        else //ext
+                        {
+                            StreamWriter fileWriter = new StreamWriter(output);
+                            persistShapesAsText(fileWriter);
+                            fileWriter.Close();
+                        }
+
+                        
                         newFile = false;
                         // disable Save button and enable Enter button
                         //    saveButton.Enabled = false;
                         //   enterButton.Enabled = true;
+
+                        this.Text = Path.GetFileName(currentFile);
                     }
                     catch (IOException)
                     {
@@ -181,6 +169,47 @@ namespace Draw
                     }
                 }
             }
+        }
+
+        private void persistShapesAsBin(BinaryWriter writer)
+        {
+            foreach (Shape shape in shapeList)
+            {
+                shape.writeBinary(writer);
+
+            }
+        }
+
+        private void persistShapesAsText(StreamWriter writer)
+        {
+
+            foreach (Shape shape in shapeList)
+            {
+                shape.writeText(writer);
+
+            }
+        }
+
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+     
+            if (!newFile)
+            {
+                FileStream output = new FileStream(currentFile,
+                           FileMode.Create, FileAccess.Write);
+
+                // sets file to where data is written
+                StreamWriter writer = new StreamWriter(output);
+
+                persistShapesAsText(writer);
+
+                writer.Close();
+
+                return;
+            }
+
+            saveDialog();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -195,7 +224,8 @@ namespace Draw
             {
                 fileChooser.CheckFileExists = false; // let user create file
                 result = fileChooser.ShowDialog();
-                fileName  = fileChooser.FileName; // name of file to save data
+                fileName =currentFile = fileChooser.FileName; // name of file to save data
+                newFile = false;
             }
 
             if (result == DialogResult.OK)
@@ -212,12 +242,22 @@ namespace Draw
                         FileStream input = new FileStream(fileName,
                                    FileMode.Open, FileAccess.Read);
 
-                        // sets file to where data is written
-                        StreamReader reader = new StreamReader(input);
 
+                        string ext = Path.GetExtension(fileName);
+                        if (ext.Equals(".bin"))
+                        {
+                            BinaryReader br = new BinaryReader(input);
+                            readShapesFileAsBin(br);
+                            br.Close();
+                        }
+                        else //ext
+                        {
+                            StreamReader reader = new StreamReader(input);
+                            readShapesFileAsText(reader);
+                            reader.Close();
+                        }
 
-                        doReadAction(reader);
-                        reader.Close();
+                        this.Text = Path.GetFileName(currentFile);
                        
                     }
                     catch (IOException)
@@ -228,7 +268,40 @@ namespace Draw
             }
         }
 
-        private void doReadAction(StreamReader reader)
+        private void readShapesFileAsBin(BinaryReader br)
+        {
+
+            while (br.PeekChar() > -1)
+            {
+                String line = br.ReadString();
+
+                string type = line.Split(new char[0])[0];
+                
+          
+                switch (type)
+                {
+                    case "Line":
+                        shape = new Line();
+                        shape.readText(line);
+                        break;
+                    case "FreeLine":
+
+                        shape = new FreeLine();
+                        shape.readText(line);
+                        break;
+                    case "Rect":
+                        shape = new Rect();
+                        shape.readText(line);
+                        break;
+
+                }
+
+                shapeList.Add(shape);
+
+            }
+        }
+
+        private void readShapesFileAsText(StreamReader reader)
         {
            // String rawText = reader.ReadToEnd();
             //parse text
@@ -268,6 +341,10 @@ namespace Draw
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            shapeList.Clear();
+            Invalidate();
+            newFile = true;
+            currentFile = null;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
