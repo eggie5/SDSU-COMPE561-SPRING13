@@ -121,6 +121,8 @@ namespace Draw
             using (SaveFileDialog fileChooser = new SaveFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin";
+                fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName = currentFile = fileChooser.FileName; // name of file to save data
             }
@@ -135,25 +137,27 @@ namespace Draw
                 {
                     try
                     {
-                        // open file with write access
-                        FileStream output = new FileStream(fileName,
-                           FileMode.Create, FileAccess.Write);
+                        //// open file with write access
+                        //FileStream output = new FileStream(fileName,
+                        //   FileMode.Create, FileAccess.Write);
 
-                        // sets file to where data is written
+                        //// sets file to where data is written
 
-                        string ext = Path.GetExtension(fileName);
-                        if (ext.Equals(".bin"))
-                        {
-                            BinaryWriter bw = new BinaryWriter(output);
-                            persistShapesAsBin(bw);
-                            bw.Close();
-                        }
-                        else //ext
-                        {
-                            StreamWriter fileWriter = new StreamWriter(output);
-                            persistShapesAsText(fileWriter);
-                            fileWriter.Close();
-                        }
+                        //string ext = Path.GetExtension(fileName);
+                        //if (ext.Equals(".bin"))
+                        //{
+                        //    BinaryWriter bw = new BinaryWriter(output);
+                        //    persistShapesAsBin(bw);
+                        //    bw.Close();
+                        //}
+                        //else //ext
+                        //{
+                        //    StreamWriter fileWriter = new StreamWriter(output);
+                        //    persistShapesAsText(fileWriter);
+                        //    fileWriter.Close();
+                        //}
+
+                        persistShapes();
 
                         
                         newFile = false;
@@ -180,6 +184,13 @@ namespace Draw
             }
         }
 
+        private void persistShapesAsBin(FileStream output)
+        {
+            BinaryWriter bw = new BinaryWriter(output);
+            persistShapesAsBin(bw);
+            bw.Close();
+        }
+
         private void persistShapesAsText(StreamWriter writer)
         {
 
@@ -190,21 +201,38 @@ namespace Draw
             }
         }
 
+        private void persistShapesAsText(FileStream output)
+        {
+            StreamWriter fileWriter = new StreamWriter(output);
+            persistShapesAsText(fileWriter);
+            fileWriter.Close();
+        }
+
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
      
-            if (!newFile)
+            if (!newFile) //file already exists, just save it
             {
                 FileStream output = new FileStream(currentFile,
                            FileMode.Create, FileAccess.Write);
 
                 // sets file to where data is written
-                StreamWriter writer = new StreamWriter(output);
+                string ext = Path.GetExtension(currentFile);
+                if (ext.Equals(".bin"))
+                {
+                    BinaryWriter bw = new BinaryWriter(output);
+                    persistShapesAsBin(bw);
+                    bw.Close();
+                }
+                else //ext
+                {
+                    StreamWriter fileWriter = new StreamWriter(output);
+                    persistShapesAsText(fileWriter);
+                    fileWriter.Close();
+                }
 
-                persistShapesAsText(writer);
-
-                writer.Close();
+     
 
                 return;
             }
@@ -217,12 +245,11 @@ namespace Draw
             DialogResult result;
             string fileName;
 
-       
-            
-
             using (OpenFileDialog fileChooser = new OpenFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin";
+                fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName =currentFile = fileChooser.FileName; // name of file to save data
                 newFile = false;
@@ -231,17 +258,19 @@ namespace Draw
             if (result == DialogResult.OK)
             {
                 // show error if user specified invalid file
-                if (fileName == string.Empty)
-                    MessageBox.Show("Invalid File Name", "Error",
-                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (String.IsNullOrEmpty(fileName))
+                    MessageBox.Show("Invalid File Name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
                 {
                     try
                     {
 
-                        FileStream input = new FileStream(fileName,
-                                   FileMode.Open, FileAccess.Read);
+                        FileStream input = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                        
 
+                        //clear canvas
+                        this.shapeList.Clear();
+                        this.Invalidate();
 
                         string ext = Path.GetExtension(fileName);
                         if (ext.Equals(".bin"))
@@ -257,7 +286,9 @@ namespace Draw
                             reader.Close();
                         }
 
+                        input.Close();
                         this.Text = Path.GetFileName(currentFile);
+                        Invalidate();
                        
                     }
                     catch (IOException)
@@ -341,17 +372,54 @@ namespace Draw
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataModified)
+            {
+                DialogResult dr = MessageBox.Show("Save unsaved changes?", "", MessageBoxButtons.YesNoCancel);
+                if (dr == DialogResult.Yes)
+                {
+                    persistShapes();
+                }
+            }
+
             shapeList.Clear();
             Invalidate();
             newFile = true;
             currentFile = null;
         }
 
+        private void persistShapes()
+        {
+            if (currentFile!=null)
+            {
+                string ext = Path.GetExtension(currentFile);
+                FileStream output = new FileStream(currentFile, FileMode.Create, FileAccess.Write);
+                if (ext.Equals(".bin"))
+                {
+                    persistShapesAsBin(output);
+                }
+                else //ext
+                {
+                    persistShapesAsText(output);
+                }
+
+            }
+            else
+            {
+                throw new Exception("there is no current document");
+            }
+        }
+
+  
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataModified)
             {
-                // Offer to save drawing
+                DialogResult dr = MessageBox.Show("You have unsaved changes. Save before quitting?", "", MessageBoxButtons.YesNoCancel);
+                if (dr == DialogResult.Yes)
+                {
+                    persistShapes();
+                }
             }
             Application.Exit();
         } 
