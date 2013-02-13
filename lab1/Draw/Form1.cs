@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+//using System.Runtime.Serialization.Formatters
 
 namespace Draw
 {
@@ -387,16 +388,38 @@ namespace Draw
             currentFile = null;
         }
 
-        private void persistShapes()
-        {
-            if (currentFile!=null)
-            {
+		void persistShapesAsSeralizedBinary (FileStream output)
+		{
+			BinaryFormatter formatter = new BinaryFormatter();
+			try 
+			{
+				formatter.Serialize(output, this.shapeList);
+			}
+			catch (SerializationException e) 
+			{
+				Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+				throw;
+			}
+			finally 
+			{
+				output.Close();
+			}
+		}
+		
+		private void persistShapes()
+		{
+			if (currentFile!=null)
+			{
                 string ext = Path.GetExtension(currentFile);
                 FileStream output = new FileStream(currentFile, FileMode.Create, FileAccess.Write);
                 if (ext.Equals(".bin"))
                 {
                     persistShapesAsBin(output);
                 }
+				if(ext.Equals(".ser"))
+				{
+					persistShapesAsSeralizedBinary(output);
+				}
                 else //ext
                 {
                     persistShapesAsText(output);
