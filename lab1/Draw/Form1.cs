@@ -65,7 +65,7 @@ namespace Draw
 		private void Form1_Paint(object sender, PaintEventArgs e)
 		{
             foreach (Shape shape in shapeList)
-                shape.Draw(e.Graphics, shape.penFinal);
+                shape.Draw(e.Graphics, shape.PenFinal);
         }
 
 		private void penWidthMenuItem_Click(object sender, EventArgs e)
@@ -122,7 +122,7 @@ namespace Draw
             using (SaveFileDialog fileChooser = new SaveFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin";
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| XML Ser (*.ser) |*.ser";
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName = currentFile = fileChooser.FileName; // name of file to save data
@@ -220,19 +220,9 @@ namespace Draw
 
                 // sets file to where data is written
                 string ext = Path.GetExtension(currentFile);
-                if (ext.Equals(".bin"))
-                {
-                    BinaryWriter bw = new BinaryWriter(output);
-                    persistShapesAsBin(bw);
-                    bw.Close();
-                }
-                else //ext
-                {
-                    StreamWriter fileWriter = new StreamWriter(output);
-                    persistShapesAsText(fileWriter);
-                    fileWriter.Close();
-                }
 
+
+                persistShapes();
      
 
                 return;
@@ -249,7 +239,7 @@ namespace Draw
             using (OpenFileDialog fileChooser = new OpenFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin";
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| Ser XML Files (*.ser) |*.ser";
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName =currentFile = fileChooser.FileName; // name of file to save data
@@ -280,6 +270,10 @@ namespace Draw
                             readShapesFileAsBin(br);
                             br.Close();
                         }
+                        else if (ext.Equals(".ser"))
+                        {
+                            deserializeBinaryXML(input);
+                        }
                         else //ext
                         {
                             StreamReader reader = new StreamReader(input);
@@ -297,6 +291,28 @@ namespace Draw
                         MessageBox.Show("Error opening file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+        }
+
+        private void deserializeBinaryXML(FileStream input)
+        {
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                // Deserialize the hashtable from the file and 
+                // assign the reference to the local variable.
+                this.shapeList = (List<Shape>)formatter.Deserialize(input);
+        
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                input.Close();
             }
         }
 

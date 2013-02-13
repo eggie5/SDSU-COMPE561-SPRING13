@@ -10,10 +10,21 @@ namespace Draw
 {
     public enum ShapeType { Line, Rectangle, FreeLine };
 
+    [Serializable]
     public abstract class Shape
 	{
-		public Pen penFinal;
-		public static Pen penTemp;
+        protected Color penColor;
+        protected int penWidth;
+        public Pen PenFinal
+        {
+            get { return new Pen(penColor, penWidth); }
+            set
+            {
+                penColor = value.Color;
+                penWidth = (int)value.Width;
+            }
+        }
+        public static Pen penTemp;
 		public abstract void Draw(Graphics g, Pen pen);
 		public abstract void mouseMove(Graphics g, MouseEventArgs e);
         public abstract void writeBinary(BinaryWriter bw);
@@ -23,12 +34,12 @@ namespace Draw
 
         public Shape(Pen pen)
         {
-            this.penFinal = pen;
+            this.PenFinal = pen;
         }
 
         public Shape()
         {
-			penFinal = penTemp;
+			PenFinal = penTemp;
         }
 
         public static Shape CreateShape(ShapeType type, Point pt, Pen pen)
@@ -82,7 +93,8 @@ namespace Draw
 
 	}  // End Shape class
 
-     
+
+    [Serializable]
     public class Line : Shape
 	{
          
@@ -110,13 +122,13 @@ namespace Draw
 		{
 			pt1 = Point.Empty;
 			pt2 = Point.Empty;
-			penFinal = penTemp;
+			this.PenFinal = penTemp;
 		}
 
 		public Line(Point pt, Pen pen)
 		{
             pt1 = pt2 = pt;
-			this.penFinal = pen;
+			this.PenFinal = pen;
 		}
 
 		public override void Draw(Graphics g, Pen pen)
@@ -133,7 +145,7 @@ namespace Draw
 		public override string ToString()
 		{
             string s = string.Format("Line {4} {5} ({0},{1}) ({2},{3});\n",
-				pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
+				pt1.X, pt1.Y, pt2.X, pt2.Y, (int)this.PenFinal.Width, this.PenFinal.Color.GetHashCode().ToString("X4"));
 			return s;
 		}
 
@@ -169,7 +181,7 @@ namespace Draw
 
             this.pt1 = p1;
             this.pt2 = p2;
-            this.penFinal = new Pen(color, width); ;
+            this.PenFinal = new Pen(color, width); ;
         }
 
     } // End line class
@@ -207,7 +219,7 @@ namespace Draw
 		public override string ToString()
 		{
             string s = string.Format("Rect {4} {5} ({0},{1}) ({2},{3});\n",
-                        pt1.X, pt1.Y, pt2.X, pt2.Y, (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
+                        pt1.X, pt1.Y, pt2.X, pt2.Y, (int)this.PenFinal.Width, this.PenFinal.Color.GetHashCode().ToString("X4"));
 			return s;
 
 		}
@@ -242,7 +254,7 @@ namespace Draw
 
             this.pt1 = p1;
             this.pt2 = p2;
-            this.penFinal = new Pen(color, width); ;
+            this.PenFinal = new Pen(color, width); ;
         }
 
     } // End Rect class
@@ -290,7 +302,7 @@ namespace Draw
 
 		public override string ToString()
 		{
-            string s = string.Format("FreeLine {0} {1} ", (int)penFinal.Width, penFinal.Color.GetHashCode().ToString("X4"));
+            string s = string.Format("FreeLine {0} {1} ", (int)this.PenFinal.Width, this.PenFinal.Color.GetHashCode().ToString("X4"));
 			foreach(Point p in freeList)
 				s += string.Format("({0},{1}) ", p.X, p.Y);
 
@@ -328,7 +340,7 @@ namespace Draw
                 this.freeList.Add(p1);
             }
 
-            this.penFinal = new Pen(color, width);
+            this.PenFinal = new Pen(color, width);
             
 
             
