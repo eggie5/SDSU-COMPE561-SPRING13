@@ -5,16 +5,19 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Draw
 {
     public enum ShapeType { Line, Rectangle, FreeLine };
-
+    [XmlRoot]
     [Serializable]
     public abstract class Shape
 	{
         protected Color penColor;
         protected int penWidth;
+        [XmlIgnore] 
         public Pen PenFinal
         {
             get { return new Pen(penColor, penWidth); }
@@ -94,6 +97,8 @@ namespace Draw
 	}  // End Shape class
 
 
+    [XmlInclude(typeof(Line))]
+    [SoapInclude(typeof(Line))]
     [Serializable]
     public class Line : Shape
 	{
@@ -186,6 +191,7 @@ namespace Draw
 
     } // End line class
 
+     [Serializable]
     public class Rect : Line
     {
         public Rect(Point p1, Point p2, Pen pen)
@@ -259,6 +265,7 @@ namespace Draw
 
     } // End Rect class
 
+     [Serializable]
     public class FreeLine : Shape
     {
         protected List<Point> freeList;

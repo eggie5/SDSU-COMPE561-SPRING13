@@ -10,6 +10,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 //using System.Runtime.Serialization.Formatters
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace Draw
 {
@@ -42,7 +44,7 @@ namespace Draw
 		private void Form1_MouseMove(object sender, MouseEventArgs e)
 		{
 			Graphics g = this.CreateGraphics();
-			if (e.Button == MouseButtons.Left)
+			if (e.Button == MouseButtons.Left && shape!=null)
 			{
 				Invalidate();
 				Update();
@@ -52,6 +54,12 @@ namespace Draw
 
 		private void Form1_MouseUp(object sender, MouseEventArgs e)
 		{
+            if (shape == null)
+            {
+                Console.WriteLine("null shape on mouse up");
+                return;
+            }
+
 			if (e.Button == MouseButtons.Right)
 				return;	// Don't respond to right mouse button up
 
@@ -122,7 +130,7 @@ namespace Draw
             using (SaveFileDialog fileChooser = new SaveFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| XML Ser (*.ser) |*.ser";
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| XML Ser (*.ser) |*.ser| XML (*.xml) |*.xml";
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName = currentFile = fileChooser.FileName; // name of file to save data
@@ -183,6 +191,7 @@ namespace Draw
                 shape.writeBinary(writer);
 
             }
+            writer.Close();
         }
 
         private void persistShapesAsBin(FileStream output)
@@ -190,6 +199,7 @@ namespace Draw
             BinaryWriter bw = new BinaryWriter(output);
             persistShapesAsBin(bw);
             bw.Close();
+            output.Close();
         }
 
         private void persistShapesAsText(StreamWriter writer)
@@ -200,35 +210,41 @@ namespace Draw
                 shape.writeText(writer);
 
             }
+            writer.Close(); //should this be her?
         }
 
         private void persistShapesAsText(FileStream output)
         {
             StreamWriter fileWriter = new StreamWriter(output);
             persistShapesAsText(fileWriter);
+            output.Close();
             fileWriter.Close();
+            output.Close();
+            
         }
 
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-     
-            if (!newFile) //file already exists, just save it
+
+            if (newFile) //opne new file dialog
+            {
+                saveDialog();
+
+            }
+            else //file already exists, just save it
             {
                 FileStream output = new FileStream(currentFile,
-                           FileMode.Create, FileAccess.Write);
+                          FileMode.Create, FileAccess.Write);
 
                 // sets file to where data is written
                 string ext = Path.GetExtension(currentFile);
 
 
                 persistShapes();
-     
-
-                return;
             }
 
-            saveDialog();
+            
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,7 +255,7 @@ namespace Draw
             using (OpenFileDialog fileChooser = new OpenFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| Ser XML Files (*.ser) |*.ser";
+                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| Ser BIN Files (*.ser) |*.ser|XML Files (*.xml) |*.xml";
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName =currentFile = fileChooser.FileName; // name of file to save data
@@ -260,8 +276,7 @@ namespace Draw
                         
 
                         //clear canvas
-                        this.shapeList.Clear();
-                        this.Invalidate();
+                        ClearCanvas();
 
                         string ext = Path.GetExtension(fileName);
                         if (ext.Equals(".bin"))
@@ -269,6 +284,10 @@ namespace Draw
                             BinaryReader br = new BinaryReader(input);
                             readShapesFileAsBin(br);
                             br.Close();
+                        }
+                        else if (ext.Equals(".xml"))
+                        {
+                            deserializeXML(input);
                         }
                         else if (ext.Equals(".ser"))
                         {
@@ -292,6 +311,21 @@ namespace Draw
                     }
                 }
             }
+        }
+
+        private void deserializeXML(FileStream input)
+        {
+            Type[] types = new Type[] { typeof(Line), typeof(Rect), typeof(FreeLine) };
+            XmlSerializer x = new XmlSerializer(typeof(List<Shape>), types);
+            this.shapeList=(List<Shape>)x.Deserialize(input);
+
+            input.Close();
+        }
+
+        private void ClearCanvas()
+        {
+            this.shapeList.Clear();
+            this.Invalidate();
         }
 
         private void deserializeBinaryXML(FileStream input)
@@ -410,6 +444,7 @@ namespace Draw
 			try 
 			{
 				formatter.Serialize(output, this.shapeList);
+                
 			}
 			catch (SerializationException e) 
 			{
@@ -436,6 +471,11 @@ namespace Draw
 				{
 					persistShapesAsSeralizedBinary(output);
 				}
+                else if (ext.Equals(".xml"))
+                {
+                    persistShapesAsXML(output);
+                    output.Close();
+                }
                 else //ext
                 {
                     persistShapesAsText(output);
@@ -446,6 +486,16 @@ namespace Draw
             {
                 throw new Exception("there is no current document");
             }
+        }
+
+        private void persistShapesAsXML(FileStream output)
+        {
+            Type[] types = new Type[] { typeof(Line), typeof(Rect), typeof(FreeLine) };
+           XmlSerializer x = new   XmlSerializer(typeof(List<Shape>),types);
+           x.Serialize(output, this.shapeList);
+           
+           output.Close();
+           
         }
 
   
