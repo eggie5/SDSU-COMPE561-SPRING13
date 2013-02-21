@@ -437,7 +437,7 @@ namespace Draw
                     {
                         persistShapesAsBin(output);
                     }
-                    if (ext.Equals(".ser"))
+                    else if (ext.Equals(".ser"))
                     {
                         persistShapesAsSeralizedBinary(output);
                     }
