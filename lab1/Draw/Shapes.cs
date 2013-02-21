@@ -341,6 +341,8 @@ namespace Draw
             int i;
             for (i = 3; i < items.Length-1; i++)
             {
+                if (items[i].Length < 2)
+                    continue;
                 String[] points = items[i].Substring(1, items[i].Length - 2).Split(',');
                 Point p1 = new Point(Int32.Parse(points[0]), Int32.Parse(points[1]));
                 

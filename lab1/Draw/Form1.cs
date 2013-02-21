@@ -26,6 +26,7 @@ namespace Draw
         bool dataModified = false;
         string currentFile;
         bool newFile = true;
+        String dialogFilterString = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| XML Ser (*.ser) |*.ser| XML (*.xml) |*.xml";
 
 		public Form1()
 		{
@@ -119,10 +120,10 @@ namespace Draw
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveDialog();
+            showSaveDialog();
         }
 
-        private void saveDialog()
+        private void showSaveDialog()
         {
             DialogResult result; // result of SaveFileDialog
             string fileName; // name of file containing data
@@ -130,7 +131,7 @@ namespace Draw
             using (SaveFileDialog fileChooser = new SaveFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| XML Ser (*.ser) |*.ser| XML (*.xml) |*.xml";
+                fileChooser.Filter = dialogFilterString;
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName = currentFile = fileChooser.FileName; // name of file to save data
@@ -146,14 +147,8 @@ namespace Draw
                 {
                     try
                     {
-             
-
-                        persistShapes();
-
-                        
+                        persistShapes();   
                         newFile = false;
-                   
-
                         this.Text = Path.GetFileName(currentFile);
                     }
                     catch (IOException)
@@ -207,7 +202,7 @@ namespace Draw
 
             if (newFile) //opne new file dialog
             {
-                saveDialog();
+                showSaveDialog();
             }
             else //file already exists, just save it
             {
@@ -226,7 +221,7 @@ namespace Draw
             using (OpenFileDialog fileChooser = new OpenFileDialog())
             {
                 fileChooser.CheckFileExists = false; // let user create file
-                fileChooser.Filter = "Text Files (*.txt) |*.txt| Binary Files (*.bin) |*.bin| Ser BIN Files (*.ser) |*.ser|XML Files (*.xml) |*.xml";
+                fileChooser.Filter = dialogFilterString;
                 fileChooser.DefaultExt = "txt";
                 result = fileChooser.ShowDialog();
                 fileName =currentFile = fileChooser.FileName; // name of file to save data
@@ -295,6 +290,8 @@ namespace Draw
         {
             this.shapeList.Clear();
             this.Invalidate();
+            this.dataModified = false;
+            this.newFile = true ;
         }
 
         private void deserializeBinaryXML(FileStream input)
@@ -312,10 +309,6 @@ namespace Draw
             {
                 Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
                 throw;
-            }
-            finally
-            {
-                input.Close();
             }
         }
 
@@ -420,10 +413,7 @@ namespace Draw
 				Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 				throw;
 			}
-			finally 
-			{
-				output.Close();
-			}
+
 		}
 		
 		private void persistShapes()
@@ -433,24 +423,22 @@ namespace Draw
                 string ext = Path.GetExtension(currentFile);
                 using (var output = new FileStream(currentFile, FileMode.Create, FileAccess.Write))
                 {
-                    if (ext.Equals(".bin"))
+                    switch (ext)
                     {
-                        persistShapesAsBin(output);
-                    }
-                    else if (ext.Equals(".ser"))
-                    {
-                        persistShapesAsSeralizedBinary(output);
-                    }
-                    else if (ext.Equals(".xml"))
-                    {
-                        persistShapesAsXML(output);
-                    }
-                    else //ext
-                    {
-                        persistShapesAsText(output);
+                        case ".bin":
+                            persistShapesAsBin(output);
+                            break;
+                        case ".ser":
+                            persistShapesAsSeralizedBinary(output);
+                            break;
+                        case ".xml":
+                            persistShapesAsXML(output);
+                            break;
+                        case ".txt":
+                            persistShapesAsText(output);
+                            break;
                     }
                 }
-
             }
             else
             {
