@@ -196,7 +196,7 @@ namespace Draw
             StreamWriter fileWriter = new StreamWriter(output);
             persistShapesAsText(fileWriter);
             output.Close();
-            fileWriter.Close();
+           
           
             
         }
@@ -208,17 +208,10 @@ namespace Draw
             if (newFile) //opne new file dialog
             {
                 saveDialog();
-
             }
             else //file already exists, just save it
             {
-                FileStream output = new FileStream(currentFile,
-                          FileMode.Create, FileAccess.Write);
-
                 // sets file to where data is written
-                string ext = Path.GetExtension(currentFile);
-
-
                 persistShapes();
             }
 
@@ -249,11 +242,11 @@ namespace Draw
                 {
                     try
                     {
-                        using (var input = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                        {
-                            //clear canvas
-                            ClearCanvas();
+                        //clear canvas
+                        ClearCanvas();
 
+                        using (var input = new FileStream(fileName, FileMode.Open))
+                        {
                             string ext = Path.GetExtension(fileName);
                             if (ext.Equals(".bin"))
                             {
