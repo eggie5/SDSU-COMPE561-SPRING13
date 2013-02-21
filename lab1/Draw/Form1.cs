@@ -146,33 +146,13 @@ namespace Draw
                 {
                     try
                     {
-                        //// open file with write access
-                        //FileStream output = new FileStream(fileName,
-                        //   FileMode.Create, FileAccess.Write);
-
-                        //// sets file to where data is written
-
-                        //string ext = Path.GetExtension(fileName);
-                        //if (ext.Equals(".bin"))
-                        //{
-                        //    BinaryWriter bw = new BinaryWriter(output);
-                        //    persistShapesAsBin(bw);
-                        //    bw.Close();
-                        //}
-                        //else //ext
-                        //{
-                        //    StreamWriter fileWriter = new StreamWriter(output);
-                        //    persistShapesAsText(fileWriter);
-                        //    fileWriter.Close();
-                        //}
+             
 
                         persistShapes();
 
                         
                         newFile = false;
-                        // disable Save button and enable Enter button
-                        //    saveButton.Enabled = false;
-                        //   enterButton.Enabled = true;
+                   
 
                         this.Text = Path.GetFileName(currentFile);
                     }
@@ -191,7 +171,6 @@ namespace Draw
                 shape.writeBinary(writer);
 
             }
-            writer.Close();
         }
 
         private void persistShapesAsBin(FileStream output)
@@ -199,7 +178,6 @@ namespace Draw
             BinaryWriter bw = new BinaryWriter(output);
             persistShapesAsBin(bw);
             bw.Close();
-            output.Close();
         }
 
         private void persistShapesAsText(StreamWriter writer)
@@ -210,7 +188,7 @@ namespace Draw
                 shape.writeText(writer);
 
             }
-            writer.Close(); //should this be her?
+       
         }
 
         private void persistShapesAsText(FileStream output)
@@ -219,7 +197,7 @@ namespace Draw
             persistShapesAsText(fileWriter);
             output.Close();
             fileWriter.Close();
-            output.Close();
+          
             
         }
 
@@ -271,36 +249,36 @@ namespace Draw
                 {
                     try
                     {
-
-                        FileStream input = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                        
-
-                        //clear canvas
-                        ClearCanvas();
-
-                        string ext = Path.GetExtension(fileName);
-                        if (ext.Equals(".bin"))
+                        using (var input = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                         {
-                            BinaryReader br = new BinaryReader(input);
-                            readShapesFileAsBin(br);
-                            br.Close();
-                        }
-                        else if (ext.Equals(".xml"))
-                        {
-                            deserializeXML(input);
-                        }
-                        else if (ext.Equals(".ser"))
-                        {
-                            deserializeBinaryXML(input);
-                        }
-                        else //ext
-                        {
-                            StreamReader reader = new StreamReader(input);
-                            readShapesFileAsText(reader);
-                            reader.Close();
-                        }
+                            //clear canvas
+                            ClearCanvas();
 
-                        input.Close();
+                            string ext = Path.GetExtension(fileName);
+                            if (ext.Equals(".bin"))
+                            {
+                                using (var br = new BinaryReader(input))
+                                {
+                                    readShapesFileAsBin(br);
+                                }
+                            }
+                            else if (ext.Equals(".xml"))
+                            {
+                                deserializeXML(input);
+                            }
+                            else if (ext.Equals(".ser"))
+                            {
+                                deserializeBinaryXML(input);
+                            }
+                            else //ext
+                            {
+                                using (var reader = new StreamReader(input))
+                                {
+                                    readShapesFileAsText(reader);
+                                }
+                            }
+
+                        }
                         this.Text = Path.GetFileName(currentFile);
                         Invalidate();
                        
@@ -318,8 +296,6 @@ namespace Draw
             Type[] types = new Type[] { typeof(Line), typeof(Rect), typeof(FreeLine) };
             XmlSerializer x = new XmlSerializer(typeof(List<Shape>), types);
             this.shapeList=(List<Shape>)x.Deserialize(input);
-
-            input.Close();
         }
 
         private void ClearCanvas()
@@ -462,23 +438,24 @@ namespace Draw
 			if (currentFile!=null)
 			{
                 string ext = Path.GetExtension(currentFile);
-                FileStream output = new FileStream(currentFile, FileMode.Create, FileAccess.Write);
-                if (ext.Equals(".bin"))
+                using (var output = new FileStream(currentFile, FileMode.Create, FileAccess.Write))
                 {
-                    persistShapesAsBin(output);
-                }
-				if(ext.Equals(".ser"))
-				{
-					persistShapesAsSeralizedBinary(output);
-				}
-                else if (ext.Equals(".xml"))
-                {
-                    persistShapesAsXML(output);
-                    output.Close();
-                }
-                else //ext
-                {
-                    persistShapesAsText(output);
+                    if (ext.Equals(".bin"))
+                    {
+                        persistShapesAsBin(output);
+                    }
+                    if (ext.Equals(".ser"))
+                    {
+                        persistShapesAsSeralizedBinary(output);
+                    }
+                    else if (ext.Equals(".xml"))
+                    {
+                        persistShapesAsXML(output);
+                    }
+                    else //ext
+                    {
+                        persistShapesAsText(output);
+                    }
                 }
 
             }
@@ -491,11 +468,11 @@ namespace Draw
         private void persistShapesAsXML(FileStream output)
         {
             Type[] types = new Type[] { typeof(Line), typeof(Rect), typeof(FreeLine) };
-           XmlSerializer x = new   XmlSerializer(typeof(List<Shape>),types);
-           x.Serialize(output, this.shapeList);
-           
-           output.Close();
-           
+            XmlSerializer x = new XmlSerializer(typeof(List<Shape>), types);
+            x.Serialize(output, this.shapeList);
+
+            output.Close();
+
         }
 
   
