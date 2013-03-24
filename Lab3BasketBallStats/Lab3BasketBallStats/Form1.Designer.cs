@@ -63,6 +63,26 @@
             this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.playerBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.playerDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.statDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.leagueBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.leagueBindingNavigator)).BeginInit();
             this.leagueBindingNavigator.SuspendLayout();
@@ -71,6 +91,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.teamDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // leagueBindingSource
@@ -285,7 +309,7 @@
             this.gameDataGridView.DataSource = this.gameBindingSource;
             this.gameDataGridView.Location = new System.Drawing.Point(21, 178);
             this.gameDataGridView.Name = "gameDataGridView";
-            this.gameDataGridView.Size = new System.Drawing.Size(851, 220);
+            this.gameDataGridView.Size = new System.Drawing.Size(851, 156);
             this.gameDataGridView.TabIndex = 3;
             this.gameDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.teamDataGridView_CellContentClick);
             // 
@@ -343,11 +367,158 @@
             this.dataGridViewTextBoxColumn14.HeaderText = "Team1";
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             // 
+            // playerBindingSource
+            // 
+            this.playerBindingSource.DataSource = typeof(Lab3BasketBallStats.Player);
+            // 
+            // playerDataGridView
+            // 
+            this.playerDataGridView.AutoGenerateColumns = false;
+            this.playerDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.playerDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn15,
+            this.dataGridViewTextBoxColumn16,
+            this.dataGridViewTextBoxColumn17,
+            this.dataGridViewTextBoxColumn18,
+            this.dataGridViewTextBoxColumn19,
+            this.dataGridViewTextBoxColumn20,
+            this.dataGridViewTextBoxColumn21,
+            this.dataGridViewTextBoxColumn22});
+            this.playerDataGridView.DataSource = this.playerBindingSource;
+            this.playerDataGridView.Location = new System.Drawing.Point(21, 340);
+            this.playerDataGridView.Name = "playerDataGridView";
+            this.playerDataGridView.Size = new System.Drawing.Size(862, 144);
+            this.playerDataGridView.TabIndex = 4;
+            this.playerDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.teamDataGridView_CellContentClick);
+            // 
+            // dataGridViewTextBoxColumn15
+            // 
+            this.dataGridViewTextBoxColumn15.DataPropertyName = "Id";
+            this.dataGridViewTextBoxColumn15.HeaderText = "Id";
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            // 
+            // dataGridViewTextBoxColumn16
+            // 
+            this.dataGridViewTextBoxColumn16.DataPropertyName = "name";
+            this.dataGridViewTextBoxColumn16.HeaderText = "name";
+            this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            this.dataGridViewTextBoxColumn17.DataPropertyName = "team_id";
+            this.dataGridViewTextBoxColumn17.HeaderText = "team_id";
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            this.dataGridViewTextBoxColumn18.DataPropertyName = "height";
+            this.dataGridViewTextBoxColumn18.HeaderText = "height";
+            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.DataPropertyName = "weight";
+            this.dataGridViewTextBoxColumn19.HeaderText = "weight";
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            this.dataGridViewTextBoxColumn20.DataPropertyName = "salary";
+            this.dataGridViewTextBoxColumn20.HeaderText = "salary";
+            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            this.dataGridViewTextBoxColumn21.DataPropertyName = "DBO";
+            this.dataGridViewTextBoxColumn21.HeaderText = "DBO";
+            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            this.dataGridViewTextBoxColumn22.DataPropertyName = "Team";
+            this.dataGridViewTextBoxColumn22.HeaderText = "Team";
+            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            // 
+            // statBindingSource
+            // 
+            this.statBindingSource.DataSource = typeof(Lab3BasketBallStats.Stat);
+            // 
+            // statDataGridView
+            // 
+            this.statDataGridView.AutoGenerateColumns = false;
+            this.statDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.statDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn23,
+            this.dataGridViewTextBoxColumn24,
+            this.dataGridViewTextBoxColumn25,
+            this.dataGridViewTextBoxColumn26,
+            this.dataGridViewTextBoxColumn27,
+            this.dataGridViewTextBoxColumn28,
+            this.dataGridViewTextBoxColumn29,
+            this.dataGridViewTextBoxColumn30});
+            this.statDataGridView.DataSource = this.statBindingSource;
+            this.statDataGridView.Location = new System.Drawing.Point(21, 490);
+            this.statDataGridView.Name = "statDataGridView";
+            this.statDataGridView.Size = new System.Drawing.Size(862, 220);
+            this.statDataGridView.TabIndex = 5;
+            this.statDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.teamDataGridView_CellContentClick);
+            this.statDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.teamDataGridView_CellContentClick);
+            // 
+            // dataGridViewTextBoxColumn23
+            // 
+            this.dataGridViewTextBoxColumn23.DataPropertyName = "Id";
+            this.dataGridViewTextBoxColumn23.HeaderText = "Id";
+            this.dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
+            // 
+            // dataGridViewTextBoxColumn24
+            // 
+            this.dataGridViewTextBoxColumn24.DataPropertyName = "game_id";
+            this.dataGridViewTextBoxColumn24.HeaderText = "game_id";
+            this.dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
+            // 
+            // dataGridViewTextBoxColumn25
+            // 
+            this.dataGridViewTextBoxColumn25.DataPropertyName = "player_id";
+            this.dataGridViewTextBoxColumn25.HeaderText = "player_id";
+            this.dataGridViewTextBoxColumn25.Name = "dataGridViewTextBoxColumn25";
+            // 
+            // dataGridViewTextBoxColumn26
+            // 
+            this.dataGridViewTextBoxColumn26.DataPropertyName = "points_scored";
+            this.dataGridViewTextBoxColumn26.HeaderText = "points_scored";
+            this.dataGridViewTextBoxColumn26.Name = "dataGridViewTextBoxColumn26";
+            // 
+            // dataGridViewTextBoxColumn27
+            // 
+            this.dataGridViewTextBoxColumn27.DataPropertyName = "rebounds";
+            this.dataGridViewTextBoxColumn27.HeaderText = "rebounds";
+            this.dataGridViewTextBoxColumn27.Name = "dataGridViewTextBoxColumn27";
+            // 
+            // dataGridViewTextBoxColumn28
+            // 
+            this.dataGridViewTextBoxColumn28.DataPropertyName = "shot_attemps";
+            this.dataGridViewTextBoxColumn28.HeaderText = "shot_attemps";
+            this.dataGridViewTextBoxColumn28.Name = "dataGridViewTextBoxColumn28";
+            // 
+            // dataGridViewTextBoxColumn29
+            // 
+            this.dataGridViewTextBoxColumn29.DataPropertyName = "Game";
+            this.dataGridViewTextBoxColumn29.HeaderText = "Game";
+            this.dataGridViewTextBoxColumn29.Name = "dataGridViewTextBoxColumn29";
+            // 
+            // dataGridViewTextBoxColumn30
+            // 
+            this.dataGridViewTextBoxColumn30.DataPropertyName = "Player";
+            this.dataGridViewTextBoxColumn30.HeaderText = "Player";
+            this.dataGridViewTextBoxColumn30.Name = "dataGridViewTextBoxColumn30";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(907, 761);
+            this.ClientSize = new System.Drawing.Size(907, 806);
+            this.Controls.Add(this.statDataGridView);
+            this.Controls.Add(this.playerDataGridView);
             this.Controls.Add(this.gameDataGridView);
             this.Controls.Add(this.teamDataGridView);
             this.Controls.Add(this.leagueDataGridView);
@@ -364,6 +535,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.teamDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,6 +579,26 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.BindingSource playerBindingSource;
+        private System.Windows.Forms.DataGridView playerDataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
+        private System.Windows.Forms.BindingSource statBindingSource;
+        private System.Windows.Forms.DataGridView statDataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn25;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn26;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn27;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn28;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn29;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn30;
 
        
 
