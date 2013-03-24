@@ -11,6 +11,7 @@
     <AssemblyName>Lab3BasketBallStats</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +24,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -60,10 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataClasses1.designer.cs">
+    <Compile Include="BasketBallz.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
+      <DependentUpon>BasketBallz.dbml</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -71,22 +71,13 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Players.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Players.Designer.cs">
-      <DependentUpon>Players.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="DataClasses1.dbml.layout">
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    <None Include="BasketBallz.dbml.layout">
+      <DependentUpon>BasketBallz.dbml</DependentUpon>
     </None>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Players.resx">
-      <DependentUpon>Players.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -97,15 +88,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="DataClasses1.dbml">
+    <None Include="BasketBallz.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
+      <LastGenOutput>BasketBallz.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\Game.datasource" />
     <None Include="Properties\DataSources\League.datasource" />
     <None Include="Properties\DataSources\Player.datasource" />
-    <None Include="Properties\DataSources\Statistic.datasource" />
+    <None Include="Properties\DataSources\Stat.datasource" />
     <None Include="Properties\DataSources\Team.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -141,12 +132,12 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BasketBallStats.mdf">
+    <Content Include="stats.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BasketBallStats_log.ldf">
-      <DependentUpon>BasketBallStats.mdf</DependentUpon>
+    <Content Include="stats_log.ldf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>stats.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup />

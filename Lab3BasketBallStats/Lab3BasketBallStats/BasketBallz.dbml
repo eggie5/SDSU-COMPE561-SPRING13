@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Stats" Class="StatsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Stats.mdf;Integrated Security=True" SettingsObjectName="Lab3BasketBallStats.Properties.Settings" SettingsPropertyName="StatsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Games" Member="Games">
+    <Type Name="Game">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="home_team_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="visiting_team_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="home_team_score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="visiting_team_score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Game_Stat" Member="Stats" ThisKey="Id" OtherKey="game_id" Type="Stat" />
+      <Association Name="Team_Game" Member="Team" ThisKey="home_team_id" OtherKey="Id" Type="Team" IsForeignKey="true" />
+      <Association Name="Team_Game1" Member="Team1" ThisKey="visiting_team_id" OtherKey="Id" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Leagues" Member="Leagues">
+    <Type Name="League">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="League_Team" Member="Teams" ThisKey="Id" OtherKey="league_id" Type="Team" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Players" Member="Players">
+    <Type Name="Player">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="team_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="height" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="weight" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="salary" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DBO" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Player_Stat" Member="Stats" ThisKey="Id" OtherKey="player_id" Type="Stat" />
+      <Association Name="Team_Player" Member="Team" ThisKey="team_id" OtherKey="Id" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Stats" Member="Stats">
+    <Type Name="Stat">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="game_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="player_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="points_scored" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="rebounds" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="shot_attemps" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Game_Stat" Member="Game" ThisKey="game_id" OtherKey="Id" Type="Game" IsForeignKey="true" />
+      <Association Name="Player_Stat" Member="Player" ThisKey="player_id" OtherKey="Id" Type="Player" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teams" Member="Teams">
+    <Type Name="Team">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="league_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Team_Game" Member="Games" ThisKey="Id" OtherKey="home_team_id" Type="Game" />
+      <Association Name="Team_Game1" Member="Games1" ThisKey="Id" OtherKey="visiting_team_id" Type="Game" />
+      <Association Name="Team_Player" Member="Players" ThisKey="Id" OtherKey="team_id" Type="Player" />
+      <Association Name="League_Team" Member="League" ThisKey="league_id" OtherKey="Id" Type="League" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
