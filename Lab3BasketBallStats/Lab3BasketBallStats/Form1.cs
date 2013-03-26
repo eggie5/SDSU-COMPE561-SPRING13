@@ -63,6 +63,11 @@ namespace Lab3BasketBallStats
                 from stat in database.Stats
                 orderby stat.Id
                 select stat;
+
+           players_TeamBindingSource.DataSource =
+               from playerTeam in database.Players_Teams
+               orderby playerTeam.Id
+               select playerTeam;
            
         }
 
@@ -78,6 +83,9 @@ namespace Lab3BasketBallStats
                     leagueBindingNavigator.BindingSource = teamBindingSource;
                     break;
                 case "statDataGridView":
+                    leagueBindingNavigator.BindingSource = statBindingSource;
+                    break;
+                case "players_TeamDataGridView":
                     leagueBindingNavigator.BindingSource = statBindingSource;
                     break;
             }

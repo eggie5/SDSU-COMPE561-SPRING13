@@ -73,6 +73,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueriesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueriesForm.Designer.cs">
+      <DependentUpon>QueriesForm.cs</DependentUpon>
+    </Compile>
     <None Include="BasketBallz.dbml.layout">
       <DependentUpon>BasketBallz.dbml</DependentUpon>
     </None>
@@ -96,6 +102,7 @@
     <None Include="Properties\DataSources\Game.datasource" />
     <None Include="Properties\DataSources\League.datasource" />
     <None Include="Properties\DataSources\Player.datasource" />
+    <None Include="Properties\DataSources\Players_Team.datasource" />
     <None Include="Properties\DataSources\Stat.datasource" />
     <None Include="Properties\DataSources\Team.datasource" />
     <None Include="Properties\Settings.settings">

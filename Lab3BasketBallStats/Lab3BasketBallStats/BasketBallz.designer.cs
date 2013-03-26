@@ -45,6 +45,9 @@ namespace Lab3BasketBallStats
     partial void InsertTeam(Team instance);
     partial void UpdateTeam(Team instance);
     partial void DeleteTeam(Team instance);
+    partial void InsertPlayers_Team(Players_Team instance);
+    partial void UpdatePlayers_Team(Players_Team instance);
+    partial void DeletePlayers_Team(Players_Team instance);
     #endregion
 		
 		public StatsDataContext() : 
@@ -114,6 +117,14 @@ namespace Lab3BasketBallStats
 			get
 			{
 				return this.GetTable<Team>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Players_Team> Players_Teams
+		{
+			get
+			{
+				return this.GetTable<Players_Team>();
 			}
 		}
 	}
@@ -570,6 +581,8 @@ namespace Lab3BasketBallStats
 		
 		private EntitySet<Stat> _Stats;
 		
+		private EntitySet<Players_Team> _Players_Teams;
+		
 		private EntityRef<Team> _Team;
 		
     #region Extensibility Method Definitions
@@ -595,6 +608,7 @@ namespace Lab3BasketBallStats
 		public Player()
 		{
 			this._Stats = new EntitySet<Stat>(new Action<Stat>(this.attach_Stats), new Action<Stat>(this.detach_Stats));
+			this._Players_Teams = new EntitySet<Players_Team>(new Action<Players_Team>(this.attach_Players_Teams), new Action<Players_Team>(this.detach_Players_Teams));
 			this._Team = default(EntityRef<Team>);
 			OnCreated();
 		}
@@ -756,6 +770,19 @@ namespace Lab3BasketBallStats
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Player_Players_Team", Storage="_Players_Teams", ThisKey="Id", OtherKey="player_id")]
+		public EntitySet<Players_Team> Players_Teams
+		{
+			get
+			{
+				return this._Players_Teams;
+			}
+			set
+			{
+				this._Players_Teams.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Player", Storage="_Team", ThisKey="team_id", OtherKey="Id", IsForeignKey=true)]
 		public Team Team
 		{
@@ -817,6 +844,18 @@ namespace Lab3BasketBallStats
 		}
 		
 		private void detach_Stats(Stat entity)
+		{
+			this.SendPropertyChanging();
+			entity.Player = null;
+		}
+		
+		private void attach_Players_Teams(Players_Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.Player = this;
+		}
+		
+		private void detach_Players_Teams(Players_Team entity)
 		{
 			this.SendPropertyChanging();
 			entity.Player = null;
@@ -1105,6 +1144,8 @@ namespace Lab3BasketBallStats
 		
 		private EntitySet<Player> _Players;
 		
+		private EntitySet<Players_Team> _Players_Teams;
+		
 		private EntityRef<League> _League;
 		
     #region Extensibility Method Definitions
@@ -1124,6 +1165,7 @@ namespace Lab3BasketBallStats
 			this._Games = new EntitySet<Game>(new Action<Game>(this.attach_Games), new Action<Game>(this.detach_Games));
 			this._Games1 = new EntitySet<Game>(new Action<Game>(this.attach_Games1), new Action<Game>(this.detach_Games1));
 			this._Players = new EntitySet<Player>(new Action<Player>(this.attach_Players), new Action<Player>(this.detach_Players));
+			this._Players_Teams = new EntitySet<Players_Team>(new Action<Players_Team>(this.attach_Players_Teams), new Action<Players_Team>(this.detach_Players_Teams));
 			this._League = default(EntityRef<League>);
 			OnCreated();
 		}
@@ -1231,6 +1273,19 @@ namespace Lab3BasketBallStats
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Players_Team", Storage="_Players_Teams", ThisKey="Id", OtherKey="team_id")]
+		public EntitySet<Players_Team> Players_Teams
+		{
+			get
+			{
+				return this._Players_Teams;
+			}
+			set
+			{
+				this._Players_Teams.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="League_Team", Storage="_League", ThisKey="league_id", OtherKey="Id", IsForeignKey=true)]
 		public League League
 		{
@@ -1319,6 +1374,258 @@ namespace Lab3BasketBallStats
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;
+		}
+		
+		private void attach_Players_Teams(Players_Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Players_Teams(Players_Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Players_Teams")]
+	public partial class Players_Team : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _player_id;
+		
+		private System.Nullable<int> _team_id;
+		
+		private System.DateTime _start_date;
+		
+		private System.Nullable<System.DateTime> _end_date;
+		
+		private EntityRef<Player> _Player;
+		
+		private EntityRef<Team> _Team;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void Onplayer_idChanging(System.Nullable<int> value);
+    partial void Onplayer_idChanged();
+    partial void Onteam_idChanging(System.Nullable<int> value);
+    partial void Onteam_idChanged();
+    partial void Onstart_dateChanging(System.DateTime value);
+    partial void Onstart_dateChanged();
+    partial void Onend_dateChanging(System.Nullable<System.DateTime> value);
+    partial void Onend_dateChanged();
+    #endregion
+		
+		public Players_Team()
+		{
+			this._Player = default(EntityRef<Player>);
+			this._Team = default(EntityRef<Team>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_player_id", DbType="Int")]
+		public System.Nullable<int> player_id
+		{
+			get
+			{
+				return this._player_id;
+			}
+			set
+			{
+				if ((this._player_id != value))
+				{
+					if (this._Player.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onplayer_idChanging(value);
+					this.SendPropertyChanging();
+					this._player_id = value;
+					this.SendPropertyChanged("player_id");
+					this.Onplayer_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_team_id", DbType="Int")]
+		public System.Nullable<int> team_id
+		{
+			get
+			{
+				return this._team_id;
+			}
+			set
+			{
+				if ((this._team_id != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onteam_idChanging(value);
+					this.SendPropertyChanging();
+					this._team_id = value;
+					this.SendPropertyChanged("team_id");
+					this.Onteam_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_start_date", DbType="Date NOT NULL")]
+		public System.DateTime start_date
+		{
+			get
+			{
+				return this._start_date;
+			}
+			set
+			{
+				if ((this._start_date != value))
+				{
+					this.Onstart_dateChanging(value);
+					this.SendPropertyChanging();
+					this._start_date = value;
+					this.SendPropertyChanged("start_date");
+					this.Onstart_dateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_end_date", DbType="Date")]
+		public System.Nullable<System.DateTime> end_date
+		{
+			get
+			{
+				return this._end_date;
+			}
+			set
+			{
+				if ((this._end_date != value))
+				{
+					this.Onend_dateChanging(value);
+					this.SendPropertyChanging();
+					this._end_date = value;
+					this.SendPropertyChanged("end_date");
+					this.Onend_dateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Player_Players_Team", Storage="_Player", ThisKey="player_id", OtherKey="Id", IsForeignKey=true)]
+		public Player Player
+		{
+			get
+			{
+				return this._Player.Entity;
+			}
+			set
+			{
+				Player previousValue = this._Player.Entity;
+				if (((previousValue != value) 
+							|| (this._Player.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Player.Entity = null;
+						previousValue.Players_Teams.Remove(this);
+					}
+					this._Player.Entity = value;
+					if ((value != null))
+					{
+						value.Players_Teams.Add(this);
+						this._player_id = value.Id;
+					}
+					else
+					{
+						this._player_id = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Player");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Players_Team", Storage="_Team", ThisKey="team_id", OtherKey="Id", IsForeignKey=true)]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Players_Teams.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Players_Teams.Add(this);
+						this._team_id = value.Id;
+					}
+					else
+					{
+						this._team_id = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Team");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

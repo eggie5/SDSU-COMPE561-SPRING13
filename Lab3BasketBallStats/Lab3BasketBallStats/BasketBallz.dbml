@@ -31,6 +31,7 @@
       <Column Name="salary" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="DBO" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Player_Stat" Member="Stats" ThisKey="Id" OtherKey="player_id" Type="Stat" />
+      <Association Name="Player_Players_Team" Member="Players_Teams" ThisKey="Id" OtherKey="player_id" Type="Players_Team" />
       <Association Name="Team_Player" Member="Team" ThisKey="team_id" OtherKey="Id" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
@@ -54,7 +55,19 @@
       <Association Name="Team_Game" Member="Games" ThisKey="Id" OtherKey="home_team_id" Type="Game" />
       <Association Name="Team_Game1" Member="Games1" ThisKey="Id" OtherKey="visiting_team_id" Type="Game" />
       <Association Name="Team_Player" Member="Players" ThisKey="Id" OtherKey="team_id" Type="Player" />
+      <Association Name="Team_Players_Team" Member="Players_Teams" ThisKey="Id" OtherKey="team_id" Type="Players_Team" />
       <Association Name="League_Team" Member="League" ThisKey="league_id" OtherKey="Id" Type="League" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Players_Teams" Member="Players_Teams">
+    <Type Name="Players_Team">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="player_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="team_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="start_date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="end_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Player_Players_Team" Member="Player" ThisKey="player_id" OtherKey="Id" Type="Player" IsForeignKey="true" />
+      <Association Name="Team_Players_Team" Member="Team" ThisKey="team_id" OtherKey="Id" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
