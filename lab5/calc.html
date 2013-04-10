@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title>
+			Calc
+		</title>
+		
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/lab5.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="container">
+				<h1>Lab 5</h1>
+		
+		<ul class="nav nav-tabs" id="myTab">
+		  <li class="active"><a href="#list" data-toggle="tab">List</a></li>
+		  <li><a href="#interest" data-toggle="tab">Interest</a></li>
+		  <li><a href="#converstion" data-toggle="tab">Conversion</a></li>
+		</ul>
+
+		<div class="tab-content">
+		  <div class="tab-pane active" id="list">
+		  	<form class="">
+			  <fieldset>
+			    <legend>List Calculator</legend>
+			    <label>List</label>
+			    <input type="text" placeholder="Enter List">
+			    <span class="help-block">Example block-level help text here.</span>
+			    <div class="form-actions">
+				  <button type="submit" class="btn btn-primary">Calculate</button>
+				</div>
+			  </fieldset>
+
+			</form>
+		  </div>
+		  <div class="tab-pane" id="interest">
+		  	<form class="inline-form">
+
+			  <fieldset>
+			    <legend>Interest Calculator</legend>
+				<div class="input-prepend">
+				  <span class="add-on">$</span>
+				  <input class="span2" id="prependedInput" type="text" placeholder="Initial Investment">
+				</div>
+				<div class="input-prepend">
+				  <span class="add-on">$</span>
+				  <input class="span2" id="prependedInput" type="text" placeholder="Monthly Deposit">
+				</div>
+				<div class="input-append">
+				  <input class="span2" id="prependedInput" type="text" placeholder="Interest Rate">
+				  <span class="add-on">%</span>
+				</div>
+				<input type="text" placeholder="Time (monthes)">
+			    <span class="help-block">Example block-level help text here.</span>
+			    <div class="form-actions">
+				  <button type="submit" class="btn btn-primary">Calculate</button>
+				</div>
+			  </fieldset>
+			</form>
+		  </div>
+		  <div class="tab-pane" id="converstion">
+			Converstion
+		  </div>
+		</div>
+		
+		
+
+		
+		
+		
+		
+		
+
+
+		
+		<!-- Le javascript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="js/underscore.js"></script>
+	    <script src="js/bootstrap.js"></script>
+	    <script src="js/list_calc.js"></script>
+	   	</div>
+		</div>
+	</body>
+</html>
