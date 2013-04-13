@@ -21,12 +21,26 @@
 
 		<div class="tab-content">
 		  <div class="tab-pane active" id="list">
-		  	<form class="">
+		  	<form class="" id="list_form">
 			  <fieldset>
 			    <legend>List Calculator</legend>
 			    <label>List</label>
-			    <input type="text" placeholder="Enter List">
+			    <input type="text" id="list_calc_input" placeholder="Enter List">
 			    <span class="help-block">Example block-level help text here.</span>
+				<div id="outputs">
+					<div id="avg_disp">
+						<strong> Sorted: </strong> <span id="sorted_val">x</span>
+					</div>
+					<div id="avg_disp">
+						<strong> Average: </strong> <span id="avg_val">x</span>
+					</div>
+					<div id="max_disp">
+						<strong> Max: </strong> <span id="max_val">x</span>
+					</div>
+					<div id="min_disp">
+						<strong> Min: </strong> <span id="min_val">x</span>
+					</div>
+				</div>
 			    <div class="form-actions">
 				  <button type="submit" class="btn btn-primary">Calculate</button>
 				</div>
@@ -81,6 +95,7 @@
 		<script src="js/underscore.js"></script>
 	    <script src="js/bootstrap.js"></script>
 	    <script src="js/list_calc.js"></script>
+		<script src="js/convert.js"></script>
 	   	</div>
 		</div>
 	</body>
