@@ -49,24 +49,39 @@
 			</form>
 		  </div>
 		  <div class="tab-pane" id="interest">
-		  	<form class="inline-form">
+		  	<form class="inline-form" id="interest_form">
 
 			  <fieldset>
 			    <legend>Interest Calculator</legend>
 				<div class="input-prepend">
 				  <span class="add-on">$</span>
-				  <input class="span2" id="prependedInput" type="text" placeholder="Initial Investment">
+				  <input class="span2" id="initial" type="text" placeholder="Initial Investment">
 				</div>
 				<div class="input-prepend">
 				  <span class="add-on">$</span>
-				  <input class="span2" id="prependedInput" type="text" placeholder="Monthly Deposit">
+				  <input class="span2" id="monthly" type="text" placeholder="Monthly Deposit">
 				</div>
 				<div class="input-append">
-				  <input class="span2" id="prependedInput" type="text" placeholder="Interest Rate">
+				  <input class="span2" id="rate" type="text" placeholder="Interest Rate">
 				  <span class="add-on">%</span>
 				</div>
-				<input type="text" placeholder="Time (monthes)">
-			    <span class="help-block">Example block-level help text here.</span>
+				<input type="text" placeholder="Time (monthes)" id="time">
+			    
+				<div>
+					<table class="table table-hover table-striped" id="interest_table">
+			             <thead>
+		                <tr>
+		                  <th>Month #</th>
+		                  <th>Value</th>
+		                  
+		                </tr>
+		              </thead>
+		              <tbody>
+		   
+		              </tbody>
+		            </table>
+				</div>
+			
 			    <div class="form-actions">
 				  <button type="submit" class="btn btn-primary">Calculate</button>
 				</div>
@@ -74,7 +89,7 @@
 			</form>
 		  </div>
 		  <div class="tab-pane" id="converstion">
-			Converstion
+			Conversation
 		  </div>
 		</div>
 		
@@ -94,7 +109,9 @@
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/underscore.js"></script>
 	    <script src="js/bootstrap.js"></script>
+	    <script src="js/klass.js"></script>
 	    <script src="js/list_calc.js"></script>
+		<script src="js/interest_calc.js"></script>
 		<script src="js/convert.js"></script>
 	   	</div>
 		</div>
