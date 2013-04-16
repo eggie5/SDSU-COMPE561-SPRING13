@@ -16,7 +16,7 @@
 		<ul class="nav nav-tabs" id="myTab">
 		  <li class="active"><a href="#list" data-toggle="tab">List</a></li>
 		  <li><a href="#interest" data-toggle="tab">Interest</a></li>
-		  <li><a href="#converstion" data-toggle="tab">Conversion</a></li>
+		  <li><a href="#conversion" data-toggle="tab">Conversion</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -77,7 +77,7 @@
 		                </tr>
 		              </thead>
 		              <tbody>
-		   
+		   	
 		              </tbody>
 		            </table>
 				</div>
@@ -88,8 +88,61 @@
 			  </fieldset>
 			</form>
 		  </div>
-		  <div class="tab-pane" id="converstion">
-			Conversation
+		  <div class="tab-pane" id="conversion">
+			<form class="" id="conversion_form">
+			  <fieldset>
+			    <legend>Conversion Calculator</legend>
+			  </fieldset>
+			</form>
+			<form class="bs-docs-example form-inline" id="length_form">
+				<div class="input-append">
+				  <input class="input-small"  id="feet_input" placeholder="Feet"type="text">
+				  <span class="add-on">Feet</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="meters_input" placeholder="Meters"type="text">
+				  <span class="add-on">Meters</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="mils_input" placeholder="Miles"type="text">
+				  <span class="add-on">Miles</span>
+				</div>     
+			</form>
+			<form class="bs-docs-example form-inline" id="volume_form">
+				<div class="input-append">
+				  <input class="input-small"  id="ounces_input" placeholder="Ounces"type="text">
+				  <span class="add-on">Ounces</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="quarts_input" placeholder="Quarts"type="text">
+				  <span class="add-on">Quarts</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="litres_input" placeholder="Litres"type="text">
+				  <span class="add-on">Litres</span>
+				</div>     
+			</form>
+			<form class="bs-docs-example form-inline" id="area_form">
+				<div class="input-append">
+				  <input class="input-small"  id="area_input" placeholder="Square Feet"type="text">
+				  <span class="add-on">Square Feet</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="squer_miles_input" placeholder="Square Miles"type="text">
+				  <span class="add-on">Square Miles</span>
+				</div>
+				<div class="input-append">
+				  <input class="input-small"  id="acres_input" placeholder="Acres"type="text">
+				  <span class="add-on">Acres</span>
+				</div>     
+			</form>
+			<form class="inline-form" id="conversion_form">
+			  <fieldset>
+			    <div class="form-actions">
+				  <button type="submit" class="btn btn-primary">Calculate</button>
+				</div>
+			  </fieldset>
+			</form>
 		  </div>
 		</div>
 		
