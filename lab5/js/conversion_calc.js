@@ -40,6 +40,19 @@ var ConversionCalc = Class.extend(
 		$("#ounces_input").val(new VolumeStrategy().liters_to_ounces(val));
 		$("#quarts_input").val(new VolumeStrategy().  liters_to_quarts(val));
 		break;
+		
+		case "square-feet":
+		$("#square-miles_input").val(new AreaStrategy().sqfeet_to_sqmiles(val));
+		$("#acres_input").val(new AreaStrategy() .sqfeet_to_acres(val));
+		break;
+		case "square-miles":
+		$("#square-feet_input").val(new AreaStrategy(). sqmiles_to_sqfeet(val));
+		$("#acres_input").val(new AreaStrategy().sqmiles_to_acres(val));
+		break;
+		case "acres":
+		$("#square-feet_input").val(new AreaStrategy().acres_to_sqfeet(val));
+		$("#square-miles_input").val(new AreaStrategy().  acres_to_sqmiles(val));
+		break;
 	}
   },
   ValueAt: function(t)
@@ -108,6 +121,39 @@ var VolumeStrategy = Class.extend(
 	{
 		return liters *  1.05669;
 	}
+});
+
+var AreaStrategy = Class.extend(
+{
+	 sqfeet_to_sqmiles :function ( sqfeet)
+	{
+		return sqfeet /  27878400;
+	}		,
+
+	 sqfeet_to_acres :function ( sqfeet)
+	{
+		return sqfeet *  0.00002296;
+	}	,	
+
+	 sqmiles_to_sqfeet :function ( sqmiles)
+	{
+		return sqmiles *  27878400;
+	},		
+
+	 sqmiles_to_acres :function ( sqmile)
+	{
+		return sqmile *  640;
+	},		
+
+	 acres_to_sqfeet  :function( acre)
+	{
+		return acre *  43560;
+	},		
+
+	 acres_to_sqmiles :function ( acres)
+	{
+		return acres *  0.0015625;
+	}		
 });
  
 var convert_calc = new ConversionCalc();

@@ -10,7 +10,7 @@ var InterestCalc = Class.extend(
   },
   ValueAt: function(t)
   {
-	return (this.p+ (this.m*t))*(1+this.r);
+	return this.p + this.m*t + (this.p + this.m*t)*this.r;
   }
 });
  
@@ -22,9 +22,11 @@ $('#interest_form button').click(function()
 
 	var tbody=$("#interest_table tbody");
 	tbody.empty();
+	//insert intial
+	tbody.append("<tr><td>initial</td><td>$"+calc.p+"</td></tr>");
 	for(i=0;i<time;i++)
 	{
-		tbody.append("<tr><td>"+i+"</td><td>"+calc.ValueAt(i)+"</td></tr>");
+		tbody.append("<tr><td>"+(i)+"</td><td>$"+calc.ValueAt(i)+"</td></tr>");
 	}
 	
 	return false;
